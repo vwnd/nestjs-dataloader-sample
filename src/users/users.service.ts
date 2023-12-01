@@ -16,7 +16,7 @@ export class UsersService {
     return new Promise(async (resolve) => {
       setTimeout(() => {
         resolve(this.users);
-      }, 3000);
+      }, 1000);
     });
   }
 
@@ -25,7 +25,16 @@ export class UsersService {
     return new Promise(async (resolve) => {
       setTimeout(() => {
         resolve(this.users.find((user) => user.id === id));
-      }, 2000);
+      }, 1000);
+    });
+  }
+
+  async getUsersByIds(ids: readonly number[]): Promise<User[]> {
+    this.logger.debug(`Getting users with ids ${ids}`);
+    return new Promise(async (resolve) => {
+      setTimeout(() => {
+        resolve(this.users.filter((user) => ids.includes(user.id)));
+      }, 1000);
     });
   }
 }
