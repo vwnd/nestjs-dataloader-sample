@@ -10,7 +10,7 @@ import { Post } from './post.entity';
 import { PostsService } from './posts.service';
 import { User } from 'src/users/user.entity';
 import { UsersService } from 'src/users/users.service';
-import DataLoader from 'dataloader';
+import * as DataLoader from 'dataloader';
 import { Logger } from '@nestjs/common';
 
 @Resolver(Post)
