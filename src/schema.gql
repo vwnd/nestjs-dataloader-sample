@@ -2,16 +2,16 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type User {
-  id: Int!
-  name: String!
-}
-
 type Post {
-  id: String!
+  id: Float!
   title: String!
   body: String!
   createdBy: User!
+}
+
+type User {
+  id: Int!
+  name: String!
 }
 
 type Query {

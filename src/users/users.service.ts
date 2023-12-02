@@ -1,40 +1,35 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { User } from './user.entity';
+import { Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class UsersService {
-  private users: User[] = [
-    { id: 1, name: 'John' },
-    { id: 2, name: 'Mary' },
-    { id: 3, name: 'Elizabeth' },
-    { id: 4, name: 'Peter' },
-  ];
-
   private logger = new Logger(UsersService.name);
 
+  constructor(
+    @InjectRepository(User)
+    private readonly usersRepository: Repository<User>,
+  ) {}
+
   async getUsers(): Promise<User[]> {
-    return new Promise(async (resolve) => {
-      setTimeout(() => {
-        resolve(this.users);
-      }, 1000);
-    });
+    const qb = this.usersRepository.createQueryBuilder();
+    this.logger.debug(qb.getSql());
+    return qb.getMany();
   }
 
   async getUser(id: number): Promise<User> {
     this.logger.debug(`Getting user with id ${id}`);
-    return new Promise(async (resolve) => {
-      setTimeout(() => {
-        resolve(this.users.find((user) => user.id === id));
-      }, 1000);
-    });
+    const qb = this.usersRepository
+      .createQueryBuilder()
+      .where({ whereFactory: { id } });
+    this.logger.debug(qb.getSql());
+    return qb.getOne();
   }
 
   async getUsersByIds(ids: readonly number[]): Promise<User[]> {
-    this.logger.debug(`Getting users with ids ${ids}`);
-    return new Promise(async (resolve) => {
-      setTimeout(() => {
-        resolve(this.users.filter((user) => ids.includes(user.id)));
-      }, 1000);
-    });
+    const qb = this.usersRepository.createQueryBuilder().whereInIds(ids);
+    this.logger.debug(qb.getSql());
+    return qb.getMany();
   }
 }

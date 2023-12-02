@@ -31,7 +31,7 @@ export class PostsResolver {
     @Parent() post: Post,
     @Context('usersLoader') usersLoader: DataLoader<number, User>,
   ) {
-    const { userId } = post;
-    return usersLoader.load(userId);
+    const { createdBy } = post;
+    return usersLoader.load(createdBy.id);
   }
 }
